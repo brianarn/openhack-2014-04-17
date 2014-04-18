@@ -1,0 +1,1 @@
+Firescore.ApplicationAdapter = DS.FixtureAdapter;

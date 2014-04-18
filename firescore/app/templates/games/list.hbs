@@ -1,0 +1,7 @@
+<h2>Game List</h2>
+
+<ul>
+    {{#each model}}
+    <li>{{#link-to 'game' this}}{{this.name}}{{/link-to}}</li>
+    {{/each}}
+</ul>

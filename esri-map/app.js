@@ -3,13 +3,14 @@ var map;
 require([
   "dojo/_base/array",
   "esri/Color",
+  "esri/graphicsUtils",
   "esri/map",
   "esri/layers/FeatureLayer",
   "esri/symbols/SimpleLineSymbol",
   "esri/symbols/SimpleFillSymbol",
   "esri/tasks/query",
   "dojo/domReady!"
-], function(arrayUtil, Color, Map, FeatureLayer, SimpleLineSymbol, SimpleFillSymbol, Query) {
+], function(arrayUtil, Color, graphicsUtils, Map, FeatureLayer, SimpleLineSymbol, SimpleFillSymbol, Query) {
   // Create our base map
   map = new Map("map", {
     basemap: "topo",
@@ -49,7 +50,7 @@ require([
       var query = new Query();
 
       // The where clause for the query (required)
-      query.where = "ScientificName = 'Accipiter cooperii'";
+      query.where = "ScientificName = 'Sibara grisea'";
 
       // Set the spatial reference of the query's output to be
       // the spatial reference of the base map
@@ -69,6 +70,18 @@ require([
           feature.setSymbol(fillSymbol);
           map.graphics.add(feature);
         }); // arrayUtil.forEach
+
+        // Get an extent that represents the results of the query
+        var queryExtent = graphicsUtils.graphicsExtent(map.graphics.graphics);
+
+        // Set the map's extent to our query's extent
+        var extentSet = map.setExtent(queryExtent);
+
+        // Get the zoom level of the map and zoom out one notch,
+        // once the map's extent has been adjusted
+        extentSet.then(function () {
+          map.setZoom(map.getZoom() - 1);
+        });
 
       }); // featureLayer.queryFeatures
 
